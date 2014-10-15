@@ -1,7 +1,11 @@
+"""Break all numbers till 1,00,000 into prime factors"""
+"""Author : Kavya """
+
 from multiprocessing import Queue, Process
 import math
 
 def factorize(n):
+    """Factorizes numbers into their prime factors"""
     if n < 2:
         return []
     factors = []
@@ -23,7 +27,9 @@ def factorize(n):
     assert False, "unreachable"
 
 def factorizer(nums, nprocs):
+    """Creates processes and sends numbers to factorize function"""
     def worker(nums, out_q):
+	""" Maintains results' dictionary"""
 	outdict = {}
 	for n in nums:
 	    outdict[n] = factorize(n)
@@ -34,7 +40,7 @@ def factorizer(nums, nprocs):
     procs = []
 
     for i in range(nprocs):
-	p = Process(target = worker, args= (nums[chunksize * i:chunksize * (i + 1)], out_q))
+	p = Process(target=worker, args=(nums[chunksize * i:chunksize * (i + 1)], out_q))
 	procs.append(p)
 	p.start()
 
@@ -48,9 +54,9 @@ def factorizer(nums, nprocs):
     return resultdict
 
 if __name__ == '__main__':
-    ans = {}
-    nums = []
-    for i in range(100000):
-	nums.append(i)
-    ans = factorizer(nums, 500)
+    ANS = {}
+    NUMBERS = []
+    for iterator in range(100000):
+	NUMBERS.append(iterator)
+    ANS = factorizer(NUMBERS, 500)
 #    print ans
