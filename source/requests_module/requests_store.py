@@ -91,7 +91,7 @@ class Start:
             finally:
                 self.task_queue.task_done()
 
-    def request(self, method, url, name = None):
+    def request(self, method, url, name = None, **kwargs):
         # store meta data that is used when reporting the request to locust's statistics
         request_meta = {}
         
@@ -101,18 +101,18 @@ class Start:
         response = self._send_request_safe_mode(method, url, **kwargs)
         
         # record the consumed time
-        request_meta["response_time"] = timedelta.total_seconds(response.elapsed)*1000 or 0
+        request_meta["response_time"] = timedelta.total_seconds(response.elapsed) or 0
         
-        request_meta["method"] = response.request.method
+        request_meta["request_type"] = response.request.method
         request_meta["name"] = name or (response.history and response.history[0] or response).request.path_url
-
-        request_meta["content_size"] = len(response.content or "")
 
         try:
             response.raise_for_status()
         except RequestException as e:
+            request_meta['exception'] = e
             requests_stats.on_request_failure(**request_meta)
         else:
+            request_meta["response_length"] = len(response.content or "")
             requests_stats.on_request_success(**request_meta)
 
     def _send_request_safe_mode(self, method, url, **kwargs):
