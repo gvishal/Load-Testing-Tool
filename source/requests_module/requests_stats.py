@@ -136,6 +136,7 @@ class StatsEntry(object):
         self.stats.last_request_timestamp = t
 
     def _log_response_time(self, response_time):
+        # print self.total_response_time/self.num_requests,response_time
         self.total_response_time += response_time
 
         if self.min_response_time is None:

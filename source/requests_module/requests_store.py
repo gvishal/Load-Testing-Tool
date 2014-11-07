@@ -67,7 +67,10 @@ class Start:
         print requests_stats.global_stats.entries
 
         print 'Time taken for %s tasks ' % self.num_tasks, tic()
-        # print 'Min Response Time %s' % requests_stats.global_stats.get('GET', '/').min_response_time
+        # print dir(requests_stats.global_stats.get('GET', '/'))
+        for key in requests_stats.global_stats.get('GET', '/').__dict__.keys():
+            print key,requests_stats.global_stats.get('GET', '/').__dict__[key]
+        print 'Min Response Time %s' % requests_stats.global_stats.get('GET', '/').min_response_time
 
     def do_work(self,item):
         """This method defines the task that the workers have to do."""
@@ -100,8 +103,8 @@ class Start:
         
         response = self._send_request_safe_mode(method, url, **kwargs)
         
-        # record the consumed time
-        request_meta["response_time"] = timedelta.total_seconds(response.elapsed) or 0
+        # record the consumed time in milliseconds
+        request_meta["response_time"] = timedelta.total_seconds(response.elapsed)*1000 or 0
         
         request_meta["request_type"] = response.request.method
         request_meta["name"] = name or (response.history and response.history[0] or response).request.path_url
