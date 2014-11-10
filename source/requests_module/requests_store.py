@@ -1,8 +1,12 @@
 #! /usr/bin/env python
 
 import time
+import signal
+
 import gevent
-from gevent import queue
+from gevent import queue, monkey
+
+monkey.patch_all(thread=False)
 
 import requests
 from requests import Response, Request
@@ -13,8 +17,8 @@ from datetime import timedelta
 from requests.exceptions import (RequestException, MissingSchema,
     InvalidSchema, InvalidURL)
 
-start = time.time()
-tic = lambda: '%1.5f seconds' % (time.time() - start)
+start_time = time.time()
+tic = lambda: '%1.5f seconds' % (time.time() - start_time)
 
 class LocustResponse(Response):
 
@@ -24,7 +28,7 @@ class LocustResponse(Response):
         Response.raise_for_status(self)
 
 
-class Start:
+class Task:
     """ Usage:  import requests_store
                 a = requests_store.Start(url, num_worker, num_tasks)
         It will start some fixed number workers who will do some fixed
@@ -32,27 +36,60 @@ class Start:
     """
     def __init__(self, url='http://localhost:8080', num_worker = 10, num_tasks = 100):
         self.task_queue = gevent.queue.JoinableQueue()
+        self.greenlets_list = []
         self.url = url
         self.num_worker = num_worker
         self.num_tasks = num_tasks
-        start = time.time()
 
-        """ Methods called in init for now.Should require explicit call 
-            and hence removed from here.
-        """
         self.spawn_workers()
 
         self.add_to_queue()
 
-        start = time.time()
+        self.work = True
 
+        self._status = "Spawned workers"
+
+        x = gevent.spawn(self.check_work) #Worker required to stop
+        x.join()
+
+        # self.print_results()
+
+    def status():
+        doc = "The status property."
+        def fget(self):
+            return self._status
+        def fset(self, value):
+            self._coins = value
+        def fdel(self):
+            del self._status
+        return locals()
+    status = property(**status())
+
+    def start(self):
+        start_time = time.time()
+        self._status = "Starting Join on them"
         self.task_queue.join()  # block until all tasks are done
+        self._status = "Job completed"
 
-        self.print_results()
+    def stop(self):
+        """ Set self.work False so that condition in worker becomes false."""
+        # gevent.killall(self.greenlets_list)
+        self.work = False
+        self._status = "Stopping task"
+
+    def check_work(self):
+        gevent.sleep(.5)
+        while True:
+            if self.work:
+                self.work = False
+                return
+            else:
+                return
 
     def spawn_workers(self):
         for i in xrange(self.num_worker):
             x = gevent.spawn(self.worker)
+            self.greenlets_list.append(x)
 
     def add_to_queue(self):
         for item in xrange(self.num_tasks):
@@ -87,7 +124,7 @@ class Start:
     def worker(self):
         """Each worker picks a task from task_queue and completes it."""
 
-        while True:
+        while self.work:
             item = self.task_queue.get()
             try:
                 self.do_work(item)
