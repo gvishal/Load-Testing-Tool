@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+function createCORSRequest(method, url) {
+  var xhr = new XMLHttpRequest();
+  if ("withCredentials" in xhr) {
+    xhr.open(method, url, true);
+  } else if (typeof XDomainRequest != "undefined") {
+    xhr = new XDomainRequest();
+    xhr.open(method, url);
+  } else {
+    xhr = null;
+  }
+  return xhr;
+}
+
+
+function makeCorsRequest() {
+  var url = 'http://localhost:1234/job';
+  //var obj = {"url" : "http://localhost:1400"};
+  var obj = document.getElementById("job").value;
+  var text = JSON.stringify(obj);
+  var xhr = createCORSRequest('POST', url);
+  if (!xhr) {
+    alert('CORS not supported');
+    return;
+  }
+
+  xhr.onload = function() {
+    var text = xhr.responseText;
+  };
+
+  xhr.onerror = function() {
+    alert('Woops, there was an error making the request.');
+  };
+  //alert(text);
+  xhr.send(text);
+  //alert('Job Done');
+}
+</script>
+</head>
+<body>
+<h3>Start giving jobs</h3>
+<form id="form" action="" method="post">
+URL:<input id="job" type="text" name="url">
+</form>
+<button onclick = "makeCorsRequest()">Start</button>
+</body>

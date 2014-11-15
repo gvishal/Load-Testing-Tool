@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en">
+    <head>
+<!--        <title>Say somthing</title>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">-->
+    </head>
+    <body>
+        {% if name %}
+	<h4>{{name}}</h4> <!--This is the dictionary which we passed to this page using render_tempate -->
+        {% endif %}
+        {% block content %}{% endblock %}
+    </body>
+</html>

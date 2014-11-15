@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+function createCORSRequest(method, url) {
+  var xhr = new XMLHttpRequest();
+  if ("withCredentials" in xhr) {
+    // XHR for Chrome/Firefox/Opera/Safari.
+    xhr.open(method, url, true);
+  } else if (typeof XDomainRequest != "undefined") {
+    // XDomainRequest for IE.
+    xhr = new XDomainRequest();
+    xhr.open(method, url);
+  } else {
+    // CORS not supported.
+    xhr = null;
+  }
+  return xhr;
+}
+
+
+// Make the actual CORS request.
+function makeCorsRequest() {
+  var url = 'http://localhost:1234/status';
+  var xhr = createCORSRequest('GET', url);
+
+  xhr.onload = function() {
+    var text = xhr.responseText; //this contains the return value as a stringyfied 'page.html' containing the status of the slave. 
+    document.getElementById("myDiv").innerHTML = text; //the 'page.html' is embedded in the inner html of the div.
+  };
+
+  xhr.onerror = function() {
+    alert('There was an error making the request!');
+  };
+
+  xhr.send();
+}
+</script>
+</head>
+<body>
+<h3>Get status of a job</h3>
+<button onclick = "makeCorsRequest()">Go</button>
+<div id="myDiv"></div>
+</body>
