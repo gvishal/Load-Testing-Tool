@@ -11,9 +11,9 @@ except:
     url = 'http://localhost:8080'
 
 a = requests_store.Task(url, num_worker = num_worker, num_tasks = num_tasks)
-print a.status
+# print "Status: %s" % a.status
 a.start()
-print a.status
+# print "Status: %s" % a.status
 a.print_results()
 a.stop()
-print a.status
+# print "Status: %s" % a.status
