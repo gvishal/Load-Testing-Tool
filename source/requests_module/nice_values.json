@@ -1,0 +1,242 @@
+[
+    {
+        "timestamp": 1416062000000,
+        "min_response_time": 1.744,
+        "max_response_time": 46.775,
+        "max_size": 20,
+        "failures": 0,
+        "requests": 100,
+        "response_time": 25.748,
+        "size": 20
+    },
+    {
+        "timestamp": 1416062100000,
+        "min_response_time": 1.672,
+        "max_response_time": 59.166,
+        "max_size": 20,
+        "failures": 0,
+        "requests": 100,
+        "response_time": 35.658,
+        "size": 20
+    },
+    {
+        "timestamp": 1416062200000,
+        "min_response_time": 2.542,
+        "max_response_time": 88.603,
+        "max_size": 20,
+        "failures": 0,
+        "requests": 100,
+        "response_time": 39.346,
+        "size": 20
+    },
+    {
+        "timestamp": 1416062400000,
+        "min_response_time": 2.628,
+        "max_response_time": 78.687,
+        "max_size": 20,
+        "failures": 0,
+        "requests": 100,
+        "response_time": 38.647,
+        "size": 20
+    },
+    {
+        "timestamp": 1416062500000,
+        "min_response_time": 3.249,
+        "max_response_time": 75.31,
+        "max_size": 20,
+        "failures": 0,
+        "requests": 99,
+        "response_time": 32.834,
+        "size": 20
+    },
+    {
+        "timestamp": 1416062600000,
+        "min_response_time": 2.993,
+        "max_response_time": 56.268,
+        "max_size": 20,
+        "failures": 0,
+        "requests": 100,
+        "response_time": 27.58397,
+        "size": 20
+    },
+    {
+        "timestamp": 1416062700000,
+        "min_response_time": 2.634,
+        "max_response_time": 35.652,
+        "max_size": 20,
+        "failures": 0,
+        "requests": 76,
+        "response_time": 18.000,
+        "size": 20
+    },
+    {
+        "timestamp": 1416062800000,
+        "min_response_time": 2.631,
+        "max_response_time": 40.078,
+        "max_size": 20,
+        "failures": 0,
+        "requests": 99,
+        "response_time": 21.169,
+        "size": 20
+    },
+    {
+        "timestamp": 1416062900000,
+        "min_response_time": 2.707,
+        "max_response_time": 54.032,
+        "max_size": 20,
+        "failures": 0,
+        "requests": 86,
+        "response_time": 31.941,
+        "size": 20
+    },
+    {
+        "timestamp": 1416063000000,
+        "min_response_time": 2.258,
+        "max_response_time": 52.488,
+        "max_size": 20,
+        "failures": 0,
+        "requests": 100,
+        "response_time": 31.564,
+        "size": 20
+    },
+    {
+        "timestamp": 1416063100000,
+        "min_response_time": 2.298,
+        "max_response_time": 48.735,
+        "max_size": 20,
+        "failures": 0,
+        "requests": 80,
+        "response_time": 26.083,
+        "size": 20
+    },
+    {
+        "timestamp": 1416063200000,
+        "min_response_time": 2.539,
+        "max_response_time": 54.159,
+        "max_size": 20,
+        "failures": 0,
+        "requests": 99,
+        "response_time": 28.191,
+        "size": 20
+    },
+    {
+        "timestamp": 1416063300000,
+        "min_response_time": 1.744,
+        "max_response_time": 46.775,
+        "max_size": 20,
+        "failures": 0,
+        "requests": 100,
+        "response_time": 25.748,
+        "size": 20
+    },
+    {
+        "timestamp": 1416063400000,
+        "min_response_time": 1.672,
+        "max_response_time": 59.166,
+        "max_size": 20,
+        "failures": 0,
+        "requests": 100,
+        "response_time": 35.658,
+        "size": 20
+    },
+    {
+        "timestamp": 1416063500000,
+        "min_response_time": 2.542,
+        "max_response_time": 88.603,
+        "max_size": 20,
+        "failures": 0,
+        "requests": 100,
+        "response_time": 39.346,
+        "size": 20
+    },
+    {
+        "timestamp": 1416063600000,
+        "min_response_time": 2.628,
+        "max_response_time": 78.687,
+        "max_size": 20,
+        "failures": 0,
+        "requests": 100,
+        "response_time": 38.647,
+        "size": 20
+    },
+    {
+        "timestamp": 1416063700000,
+        "min_response_time": 3.249,
+        "max_response_time": 75.31,
+        "max_size": 20,
+        "failures": 0,
+        "requests": 99,
+        "response_time": 32.834,
+        "size": 20
+    },
+    {
+        "timestamp": 1416063800000,
+        "min_response_time": 2.993,
+        "max_response_time": 56.268,
+        "max_size": 20,
+        "failures": 0,
+        "requests": 100,
+        "response_time": 27.58397,
+        "size": 20
+    },
+    {
+        "timestamp": 1416063900000,
+        "min_response_time": 2.634,
+        "max_response_time": 35.652,
+        "max_size": 20,
+        "failures": 0,
+        "requests": 76,
+        "response_time": 18.000,
+        "size": 20
+    },
+    {
+        "timestamp": 1416064000000,
+        "min_response_time": 2.631,
+        "max_response_time": 40.078,
+        "max_size": 20,
+        "failures": 0,
+        "requests": 99,
+        "response_time": 21.169,
+        "size": 20
+    },
+    {
+        "timestamp": 1416064100000,
+        "min_response_time": 2.707,
+        "max_response_time": 54.032,
+        "max_size": 20,
+        "failures": 0,
+        "requests": 86,
+        "response_time": 31.941,
+        "size": 20
+    },
+    {
+        "timestamp": 1416064200000,
+        "min_response_time": 2.258,
+        "max_response_time": 52.488,
+        "max_size": 20,
+        "failures": 0,
+        "requests": 100,
+        "response_time": 31.564,
+        "size": 20
+    },
+    {
+        "timestamp": 1416064300000,
+        "min_response_time": 2.298,
+        "max_response_time": 48.735,
+        "max_size": 20,
+        "failures": 0,
+        "requests": 80,
+        "response_time": 26.083,
+        "size": 20
+    },
+    {
+        "timestamp": 1416064400000,
+        "min_response_time": 2.539,
+        "max_response_time": 54.159,
+        "max_size": 20,
+        "failures": 0,
+        "requests": 99,
+        "response_time": 28.191,
+        "size": 20
+    }
+]
