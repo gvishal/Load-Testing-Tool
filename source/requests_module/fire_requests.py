@@ -14,6 +14,7 @@ a = requests_store.Task(url, num_worker = num_worker, num_tasks = num_tasks)
 # print "Status: %s" % a.status
 a.start()
 # print "Status: %s" % a.status
-a.print_results()
-a.stop()
+print a.json_output_status()
+print a.json_output_timeseries()
+# a.stop()
 # print "Status: %s" % a.status

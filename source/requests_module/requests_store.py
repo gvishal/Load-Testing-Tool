@@ -98,9 +98,15 @@ class Task:
         #     print '%s: %s' % (key,requests_stats.global_stats.get('/', 'GET').__dict__[key])
 
         # print 'data_per_sec: %s' % requests_stats.global_stats.get('/', 'GET').data_per_sec
-        print requests_stats.global_stats.get('/', 'GET').json_output()
-
+        # print requests_stats.global_stats.get('/', 'GET').json_output_timeseries()
+        # print requests_stats.global_stats.get('/', 'GET').json_output_status()
         # print 'Median Response Time: %s' % requests_stats.global_stats.get('/', 'GET').median_response_time
+
+    def json_output_timeseries(self):
+        return requests_stats.global_stats.get('/', 'GET').json_output_timeseries()
+
+    def json_output_status(self):
+        return requests_stats.global_stats.get('/', 'GET').json_output_status()
 
     def do_work(self,item):
         """This method defines the task that the workers have to do."""
@@ -131,7 +137,7 @@ class Task:
         
         # # set up pre_request hook for attaching meta data to the request object
         # request_meta["start_time"] = time.time()
-        gevent.sleep(1)
+        # gevent.sleep(1)
         
         response = self._send_request_safe_mode(method, url, **kwargs)
         

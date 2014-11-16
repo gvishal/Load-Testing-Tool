@@ -164,10 +164,10 @@ class StatsEntry(object):
             self.data_per_sec[t]['min_response_time'] = min(response_time, self.data_per_sec[t]['min_response_time'])
             self.data_per_sec[t]['max_response_time'] = max(response_time, self.data_per_sec[t]['max_response_time'])
 
-    def json_output(self):
+    def json_output_timeseries(self):
         for key,value in dict(sorted(self.data_per_sec.iteritems())).items():
             value['timestamp'] = key
-            value['response_time'] = round(value['response_time']/value['requests'],3)
+            value['response_time'] = round(self.avg_response_time, 3)
             # value['min_requests'] = value['requests']
             # value['max_requests'] = value['requests']
             # value['min_failures'] = value['failures']
@@ -176,6 +176,20 @@ class StatsEntry(object):
             # value['max_size'] = value['size']
             self.json_data.append(value)
         return json.dumps(self.json_data)
+
+    def json_output_status(self):
+        data = {}
+        data['name'] = self.name
+        data['method'] = self.method
+        data['num_requests'] = self.num_requests
+        data['num_failures'] = self.num_failures
+        data['median_response_time'] = self.median_response_time
+        data['avg_response_time'] = round(self.avg_response_time, 3)
+        data['min_response_time'] = self.min_response_time
+        data['max_response_time'] = self.max_response_time
+        data['content_length'] = self.avg_content_length
+        data['num_reqs_per_sec'] = self.current_rps
+        return json.dumps(data)
 
     def _log_response_time(self, response_time):
         # print self.total_response_time/self.num_requests,response_time
