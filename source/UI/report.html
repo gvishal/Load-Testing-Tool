@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+function createCORSRequest(method, url) {
+  var xhr = new XMLHttpRequest();
+  if ("withCredentials" in xhr) {
+    xhr.open(method, url, true);
+  } else if (typeof XDomainRequest != "undefined") {
+    xhr = new XDomainRequest();
+    xhr.open(method, url);
+  } else {
+    xhr = null;
+  }
+  return xhr;
+}
+
+
+function makeCorsRequest() {
+  var url = 'http://localhost:1234/report';
+  var xhr = createCORSRequest('GET', url);
+  if (!xhr) {
+    alert('CORS not supported');
+    return;
+  }
+
+  xhr.onload = function() {
+    var text = xhr.responseText;
+    document.getElementById("myDiv").innerHTML = JSON.parse(text);
+  };
+
+  xhr.onerror = function() {
+    alert('Woops, there was an error making the request.');
+  };
+  xhr.send();
+}
+
+function myfunc(){
+	//alert("Hi");
+        //setTimeout(function(){makeCorsRequest()}, 2000);
+	
+	makeCorsRequest();
+//setTimeout(function(){location.reload(true);},2000);
+}
+
+</script>
+</head>
+<body onload="myfunc()">
+<h3>Get reports</h3>
+<div id = "myDiv"></div>
+</body>

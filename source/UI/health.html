@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+function createCORSRequest(method, url) {
+  var xhr = new XMLHttpRequest();
+  if ("withCredentials" in xhr) {
+    xhr.open(method, url, true);
+  } else if (typeof XDomainRequest != "undefined") {
+    xhr = new XDomainRequest();
+    xhr.open(method, url);
+  } else {
+    xhr = null;
+  }
+  return xhr;
+}
+
+
+function makeCorsRequest() {
+  var url = 'http://localhost:1234/healthcheck';
+  //var obj = {"url" : "http://localhost:1400"};
+  //var obj = document.getElementById("job").value;
+  //var num = document.getElementById("num").value;
+  //var task = document.getElementById("tasks").value;
+  //var obj1 ={url:obj,num_workers:num,num_tasks:task};
+  //alert(obj1)
+  //var text1 = JSON.stringify(obj1);
+  var xhr = createCORSRequest('GET', url);
+  if (!xhr) {
+    alert('CORS not supported');
+    return;
+  }
+
+  xhr.onload = function() {
+    var text = xhr.responseText;
+    document.getElementById("myDiv").innerHTML = text;
+  };
+
+  xhr.onerror = function() {
+    alert('Woops, there was an error making the request.');
+  };
+  xhr.send();
+  //window.location = "report.html";
+}
+
+function myfunc(){
+  makeCorsRequest();
+  //window.location = "templates/report.html";
+}
+</script>
+</head>
+<body>
+<h3>Start giving jobs</h3>
+<!--<form id="form" action="" method="post">
+URL:   <input id="job" type="text" name="url"><br>
+No. of workers:<input id="num" type="text" name="nocr"><br>
+No. of tasks:<input id="tasks" type="text" name="task">
+</form>-->
+<button onclick = "myfunc()">HealthCheck</button>
+<div id="myDiv"></div>
+</body>

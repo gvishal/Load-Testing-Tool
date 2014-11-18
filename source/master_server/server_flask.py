@@ -12,6 +12,7 @@ import time
 
 app = Flask(__name__)
 api = restful.Api(app)
+app.config['STATIC_FOLDER'] = 'static'
 cors = CORS(app) # Cross Origin Request Implementation
 dic = {}
 lock = 0
@@ -44,7 +45,8 @@ class Connect(restful.Resource):
 	    t['job-given'] = 0
 	    t['job-received'] = 0
 	    t['job-completed'] = 0
-	    t['result'] = -1
+	    t['result'] = {}
+	    t['report'] = {}
             z = request.remote_addr + ":" + r['port']
             dic[z] = t
 	except:
@@ -61,6 +63,42 @@ class Status(restful.Resource):
 	d = json.dumps(dic)
 	return render_template('page.html', name=d)
 
+class Report(restful.Resource):
+    def get(self):
+        report = {}
+        global dic
+	print "hi"
+	for i in dic:
+	    url = 'http://' + i + '/Stats'
+	    r = requests.get(url)
+	    g = json.loads(r.text)
+	    try:
+	        f = g['status']
+	    except:
+	        render_template('rep.html',name= g)
+		return g
+
+	    dic[i]['report'] = json.loads(f)
+            print dic[i]['report']
+	    
+	    for j in dic[i]['report']:
+                try:
+	            report[j] += int(dic[i]['report'][j])
+		except:
+		    report[j] = int(dic[i]['report'][j])
+		
+        r = json.dumps(report)
+	render_template('rep.html', name=r)
+        return r
+#def post(self):
+#	i = request.remote_addr[:]
+#       global dic
+#	l = request.get_json(force=True)
+#	port = l['port']
+#	i = i + ':' + port
+#	dic[i]['report'] = l
+#       return {'msg' : 'Got it!'}
+        
 class JobResult(restful.Resource):
     """This class id used to obtain result from the Slave"""
     def get(self):
@@ -79,6 +117,7 @@ class JobResult(restful.Resource):
 	i = i + ":" +jsonData['port']
 	global dic
 	dic[i]['result'] = jsonData
+	print jsonData
 	y = time.time() - start
         dic[i]['job-completed'] = y
 	dic[i]['status'] = 0
@@ -95,7 +134,10 @@ class Job(restful.Resource):
         """POST method in REST"""
         global work
         jsonData = request.get_json(force=True)
-        print type(jsonData)
+	jsonData['num_tasks'] = int(jsonData['num_tasks'])
+	jsonData['num_tasks'] = jsonData['num_tasks']/3
+	jsonData['num_workers'] = int(jsonData['num_workers'])
+	jsonData['num_workers'] = jsonData['num_workers']/3
         for i in dic:
             if dic[i]['status'] == 0 and dic[i]['killed'] == -1:
                 ip = 'http://' + i + '/Job'
@@ -103,9 +145,7 @@ class Job(restful.Resource):
 	        dic[i]['job-given'] = z
 		dic[i]['status'] = 1
                 y = json.dumps(jsonData)
-	        print type(y)
                 r = requests.post(ip, data=y)
-#print r.text
         return {'msg' : 'Job sent'}
 
 class HealthCheck(restful.Resource):
@@ -116,21 +156,22 @@ class HealthCheck(restful.Resource):
         print lock
         if lock == 1:
             return
-        while True:
-                for i in dic:
-                    ip = 'http://'+ i + '/Health'
-                    print ip
-                    r = requests.get(ip)
-                    y = time.time() - start
-                    if r.status_code == 200:
-                        dic[i]['updated'] = y
-                    else:
-                        dic[i]['killed'] = 0
-                    print r.text
-                    dic[i]['status'] = r.text
-                time.sleep(10)
+        for i in dic:
+            ip = 'http://'+ i + '/Health'
+            print ip
+            r = requests.get(ip)
+            y = time.time() - start
+            if r.status_code == 200:
+                 dic[i]['updated'] = y
+	         render_template('check.html', name="Killed")
+            else:
+                 dic[i]['killed'] = 0
+                 print r.text
+                 dic[i]['status'] = r.text
+	         render_template('check.html',name=r.text)
+            time.sleep(10)
         lock = 0
-        return
+        return {'msg' : 'HealthCheck done'}
 
     def post(self):
         """POST method in REST"""
@@ -144,6 +185,7 @@ api.add_resource(Job, '/job')
 api.add_resource(HealthCheck, '/healthcheck')
 api.add_resource(JobResult,'/jobresult')
 api.add_resource(Status,'/status')
+api.add_resource(Report,'/report')
 start = time.time()
 if __name__ == '__main__':
    app.run(host='0.0.0.0',port=1234,debug=True,threaded=True)
