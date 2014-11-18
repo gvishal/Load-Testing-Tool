@@ -38,8 +38,8 @@ class Job(restful.Resource):
             instance = requests_store.Task(url, num_workers ,num_tasks)
             result = instance.start()
             final_report = {}
-            final_report["status"] = instance.json_output_status()
-            final_report["time"] = instance.json_output_timeseries()
+            final_report["status"] = json.loads(instance.json_output_status())
+            final_report["time"] = json.loads(instance.json_output_timeseries())
             final_report["job_status"] = instance.status
             final_report["port"] = sys.argv[3]
             requests.post("http://" + sys.argv[1] + ":" + sys.argv[2] + "/jobresult", data = json.dumps(final_report))      
