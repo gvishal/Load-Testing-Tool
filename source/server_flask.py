@@ -9,6 +9,7 @@ from flask_cors import CORS
 import requests
 import json
 import time
+import ast
 
 app = Flask(__name__)
 api = restful.Api(app)
@@ -67,29 +68,27 @@ class Report(restful.Resource):
     def get(self):
         report = {}
         global dic
-	print "hi"
 	for i in dic:
 	    url = 'http://' + i + '/Stats'
 	    r = requests.get(url)
-	    g = json.loads(r.text)
+            g = ast.literal_eval(r.text)
 	    try:
 	        f = g['status']
 	    except:
-	        render_template('rep.html',name= g)
-		return g
+                return r.text
+            r = json.loads(f)
+	    if r.get('msg') != None:
+	        return f
 
-	    dic[i]['report'] = json.loads(f)
-            print dic[i]['report']
-	    
+            dic[i]['report'] = r
 	    for j in dic[i]['report']:
                 try:
-	            report[j] += int(dic[i]['report'][j])
+	            report[j] += dic[i]['report'][j]
 		except:
-		    report[j] = int(dic[i]['report'][j])
+		    report[j] = dic[i]['report'][j]
 		
         r = json.dumps(report)
-	render_template('rep.html', name=r)
-        return r
+	return r
 #def post(self):
 #	i = request.remote_addr[:]
 #       global dic
@@ -117,7 +116,6 @@ class JobResult(restful.Resource):
 	i = i + ":" +jsonData['port']
 	global dic
 	dic[i]['result'] = jsonData
-	print jsonData
 	y = time.time() - start
         dic[i]['job-completed'] = y
 	dic[i]['status'] = 0
@@ -158,7 +156,6 @@ class HealthCheck(restful.Resource):
             return
         for i in dic:
             ip = 'http://'+ i + '/Health'
-            print ip
             r = requests.get(ip)
             y = time.time() - start
             if r.status_code == 200:
@@ -166,7 +163,6 @@ class HealthCheck(restful.Resource):
 	         render_template('check.html', name="Killed")
             else:
                  dic[i]['killed'] = 0
-                 print r.text
                  dic[i]['status'] = r.text
 	         render_template('check.html',name=r.text)
             time.sleep(10)
@@ -179,13 +175,21 @@ class HealthCheck(restful.Resource):
         global dic
         return
 
+class Past(restful.Resource):
+    def get(self):
+	    return "hi"
+ 
+    def post(self):
+	    return "hello"
+
 api.add_resource(HelloWorld, '/')
 api.add_resource(Connect, '/connect')
 api.add_resource(Job, '/job')
 api.add_resource(HealthCheck, '/healthcheck')
 api.add_resource(JobResult,'/jobresult')
-api.add_resource(Status,'/status')
-api.add_resource(Report,'/report')
+api.add_resource(Status,'/slave')
+api.add_resource(Report,'/status')
+api.add_resource(Past,'/past')
 start = time.time()
 if __name__ == '__main__':
    app.run(host='0.0.0.0',port=1234,debug=True,threaded=True)
