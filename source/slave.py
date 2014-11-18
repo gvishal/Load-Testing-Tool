@@ -29,19 +29,21 @@ class Job(restful.Resource):
         if job :            
             status = 1
             requests.get("http://" + sys.argv[1] + ":" + sys.argv[2] + "/jobresult?port=" + sys.argv[3] )
-            time.sleep(5) 
+             
             status = 2
             url = job["url"] or "http://localhost:8080"
             num_workers = int(job["users"]) or 100
             num_tasks = int(job["num_tasks"]) or num_workers * 100
+            jobKey = job['jobKey']
             global instance
-            instance = requests_store.Task(url, num_workers ,num_tasks)
+            instance = requests_store.Task(url, num_workers ,num_tasks, jobKey)
             result = instance.start()
             final_report = {}
             final_report["status"] = json.loads(instance.json_output_status())
             final_report["time"] = json.loads(instance.json_output_timeseries())
             final_report["job_status"] = instance.status
             final_report["port"] = sys.argv[3]
+            final_report['jobKey'] = jobKey
             requests.post("http://" + sys.argv[1] + ":" + sys.argv[2] + "/jobresult", data = json.dumps(final_report))      
             status = 0
             return 

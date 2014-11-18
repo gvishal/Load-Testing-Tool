@@ -38,7 +38,7 @@ class Task:
         It will start some fixed number workers who will do some fixed
         no of tasks.After finishing they will stats
     """
-    def __init__(self, url='http://localhost:8080', num_worker = 10, num_tasks = 100):
+    def __init__(self, url='http://localhost:8080', num_worker = 10, num_tasks = 100, jobKey=None):
         self.task_queue = gevent.queue.JoinableQueue()
         
         self.greenlet = Group()

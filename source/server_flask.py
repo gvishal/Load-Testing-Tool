@@ -10,7 +10,7 @@ import requests
 import json
 import time
 import ast
-
+import uuid
 app = Flask(__name__)
 api = restful.Api(app)
 app.config['STATIC_FOLDER'] = 'static'
@@ -85,13 +85,13 @@ class Status(restful.Resource):
             if len(status) < 2:
                 return {"status" : False, "msg" : "no stats found"}
             dic[i]['report'] = status
-            print status
+            print job_status
 
             if job_status.get('msg') != None:
                 return json.loads(job_status)
 
             total_requests += int(dic[i]['report']['num_requests'])
-            total_time += int(dic[i]['report']['avg_response_time']) * int(dic[i]['report']['num_requests']
+            total_time += int(dic[i]['report']['avg_response_time']) * int(dic[i]['report']['num_requests'])
             report['name'] = dic[i]['report']['name']
             report['method'] = dic[i]['report']['method']
             report['num_requests'] = report.setdefault('num_requests', 0) +  int(dic[i]['report']['num_requests'])
@@ -166,6 +166,7 @@ class Job(restful.Resource):
         except:
             jsonData['num_tasks'] = jsonData['users']*10
         print 'dic', dic
+        jsonData['jobKey'] = str(uuid.uuid1())
         for i in dic:
             if dic[i]['status'] == 0 and dic[i]['killed'] == -1:
                 ip = 'http://' + i + '/Job'
