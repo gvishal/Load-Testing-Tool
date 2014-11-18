@@ -108,6 +108,10 @@ class Task:
     def json_output_status(self):
         return requests_stats.global_stats.get('/', 'GET').json_output_status()
 
+    def reset_stats(self):
+        """ Resets all stats """
+        requests_stats.global_stats.get('/', 'GET').reset()
+
     def do_work(self,item):
         """This method defines the task that the workers have to do."""
         self.request('GET', self.url)

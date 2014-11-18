@@ -92,7 +92,8 @@ class StatsEntry(object):
     """ A {second => data} dict that holds data per second """
 
     json_data = None
-    """ A [{'timestamp': ,'requests': 0, 'failures': 0, 'response_time': 0, 'min_response_time': 100000, 'max_response_time': 0, 'size': 0}] list"""
+    """ A [{'timestamp': ,'requests': 0, 'failures': 0, 'response_time': 0, 'min_response_time': 100000, 
+        'max_response_time': 0, 'size': 0}] list"""
     
     response_times = None
     """
@@ -152,6 +153,7 @@ class StatsEntry(object):
         self.stats.last_request_timestamp = t
 
     def _log_data(self, response_time = None, content_length = None, failure = False):
+        """ (Timestamp,data) dictionary """
         t = int(time.time())*1000
         self.data_per_sec[t] = self.data_per_sec.setdefault(t, {'requests': 0, 'failures': 0, 'response_time': 0, 'min_response_time': 100000, 'max_response_time': 0, 'size': 0})
         self.data_per_sec[t]['requests'] = self.data_per_sec[t].setdefault('requests', 0) + 1
@@ -165,6 +167,8 @@ class StatsEntry(object):
             self.data_per_sec[t]['max_response_time'] = max(response_time, self.data_per_sec[t]['max_response_time'])
 
     def json_output_timeseries(self):
+        """ Returns Data by timestamp, used for creating graphs """
+        self.json_data  = []
         for key,value in dict(sorted(self.data_per_sec.iteritems())).items():
             value['timestamp'] = key
             value['response_time'] = round(self.avg_response_time, 3)
@@ -178,6 +182,7 @@ class StatsEntry(object):
         return json.dumps(self.json_data)
 
     def json_output_status(self):
+        """ Ouputs current status """
         data = {}
         data['name'] = self.name
         data['method'] = self.method
