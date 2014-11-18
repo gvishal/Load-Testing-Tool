@@ -1,0 +1,40 @@
+ <div class="row">
+  <div class="col-md-5">
+  </div>  
+  <div class="col-md-1">
+     <h2>Slaves</h2> 
+ </div>
+</div>
+<br>
+<div class="table"> 
+ <table ng-table="tableParams" class="table">
+    <thead>
+        <tr>
+            <th>Sl</th>
+            <th>IP</th>
+            <th>Port</th>
+            <th>Status</th>
+            <th>Created</th>
+            <th>Updated</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="data" ng-repeat="slave in slaves">
+            <td>{{slave.sl}}</td>
+            <td>{{slave.status}}</td>
+            <td>{{slave.port}}</td>
+            <td>{{slave.job-given}}</td>
+            <td>{{slave.created}}</td>
+            <td>{{slave.name}}</td>
+            
+        </tr>      
+    </tbody>
+</table>
+</div>
+<hr>
+
+
+
+
+

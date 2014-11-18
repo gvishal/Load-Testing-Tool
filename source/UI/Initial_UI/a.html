@@ -1,0 +1,35 @@
+<html>
+<head>
+   <script type="text/javascript">	
+	 var ajax_get_json=function()
+   {
+         var hr = new XMLHttpRequest();
+         hr.open("GET", "json/slave.json", true);
+         // hr.setRequestHeader("Content-type", "application/json",true);
+         hr.onreadystatechange = function() 
+           {
+              if(hr.readyState == 4 && hr.status == 200) 
+                {
+                    var data=JSON.parse(hr.responseText);
+                  
+                    
+                    
+                    
+                    alert(data.status +"     "+data.created);
+                      
+                }
+            };
+    
+    hr.send(null); 
+    
+  }
+
+ajax_get_json();
+</script>
+
+</head>
+<body>
+
+ <div id="abc"></div>
+
+</body>

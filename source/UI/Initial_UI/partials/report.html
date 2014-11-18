@@ -1,0 +1,37 @@
+<div class="row">
+  <div class="col-md-5">
+  </div>  
+  <div class="col-md-1">
+   <h2>Report</h2> 
+  </div>
+</div><br/>
+<div class="table"> 
+   <table ng-table="reportParams" class="table">
+    <thead>
+        <tr>
+            <th>Type</th>
+            <th>Name</th>
+            <th>Request</th>
+            <th>Fails</th>
+            <th>Average</th>
+            <th>Min</th>
+            <th>Max</th>
+            <th>Size</th>
+            <th>Req-Size</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="data" ng-repeat="slave in slaves">
+            <td>{{slave.sl}}</td>
+            <td>{{slave.status}}</td>
+            <td>{{slave.port}}</td>
+            <td>{{slave.job-given}}</td>
+            <td>{{slave.created}}</td>
+            <td>{{slave.name}}</td>
+            
+        </tr>      
+    </tbody>
+</table>
+</div>
+

@@ -1,0 +1,134 @@
+body{
+  background:linear-gradient( white,#cccccc);; /*url("../img/brown.jpg");*//*url("../img/green.jpg");*/  /*linear-gradient(white,#D3D6DB); */
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100%;
+
+}
+label{
+   width: 100px;
+}
+.form-control#method{
+   width:100px; 
+}
+.form-control#url{
+  width: 350px;
+}
+.row{
+    margin-top: 20px;
+}
+
+.view{
+       background-color: white;
+       width: auto;
+       min-height: 800px;
+       padding: 20px;
+       border-radius:10px 10px  10px 10px;
+}
+
+tr:nth-child(even) 
+   {background: #EEEEEE}
+
+
+.fa{
+     color:black;
+}
+.slave{
+    text-decoration: none;
+    color: black;
+    width: 200px;
+    margin-top: 10px;
+    border-radius: 5px 0px 0px 5px ;
+    height: 30px;
+    padding: 5px;
+    font-size: 15px;
+    font-weight: bold;
+
+}
+
+
+
+.menuitem{
+  
+  border-radius:0px 0px; 
+  background:#2CADE2; /* linear-gradient( white,#2CADE2); */ /*#65C3E6; #395D85; #313131*/ 
+  
+  width: 200px;
+  height: 200px;
+}
+
+.slave:hover{
+  background-color:white; /*#eeeeee*/  
+  text-decoration: none !important;
+}
+.slave:active {
+   border: 1px solid black;
+}
+.navbar-default .navbar-nav>li>a:hover {
+    background-color: #e7e7e7 !important;
+    border-bottom: 2px solid #218f8d !important;
+}
+.navbar-nav>li>a {
+    border-bottom: 2px solid transparent !important;
+    height: 80px;
+    padding-top:25px !important;
+    width: 120px;
+    text-align: center;
+}
+.navbar{
+  min-height: 80px !important;
+  border-radius: 0px !important;
+  background: #f0f0f0 !important;
+}
+.navbar-header>a{
+  height: 80px;
+  width: 120px;
+  padding-top: 25px !important;
+}
+.pull-left{
+max-width:100%;
+max-height:100%;
+}
+
+
+
+
+@media (min-width: 767px) {
+  .nav-side-menu .menu-list .menu-content {
+    display: block;
+  }
+  
+  .container {
+        width: 1130px;
+        
+  }
+}
+
+
+
+.container {
+
+text-align:justify;
+}
+/*start slave html */
+@font-face {
+   font-family: cur;
+   src: url('../fonts/black_jack.TTF');
+
+}
+th{
+    font-family: Times;
+    font-size: 20px;
+}
+table{
+  border: 1px solid rgb(240,240,240);
+    border-radius: 10px !important;
+}
+
+tr.data:hover{
+    background-color: rgb(110,110,110) !important;
+    color:white;
+}
+/*end slave html */
+
+

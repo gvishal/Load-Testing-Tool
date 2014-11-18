@@ -1,0 +1,46 @@
+<html lang="en" ng-app="robo">
+<head>
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/style.css" rel="stylesheet">
+	<link href="css/font-awesome.min.css" rel="stylesheet">
+	<script src="js/angular.js"></script>
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.0/angular-route.js"></script>
+	<script src="js/app.js"></script>
+	<script src="js/controllers/reportController.js"></script>
+    <script src="js/controllers/slaveController.js"></script>
+    <script src="js/services/services.js"></script>
+      <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.16/angular-resource.min.js"></script>
+</head>
+<body>
+        
+        <div class="row" >
+        	<div class="col-md-1 menuitem"> 
+                <a href="#/newtask">  
+                    <div class="slave"> 
+                        <i class="fa fa-plus fa-1x fa-fw"></i> New Task    
+                    </div>  
+                </a>
+        		
+        		<hr>
+        		
+                <a href="#/slave">  
+                    <div class="slave"> 
+                        <i  class="fa fa-hdd-o fa-1x fa-fw"></i>Slave List
+                    </div>  
+                </a>
+        		<hr>
+        		<a href="#/report">  
+        			<div class="slave"> 
+        				<i class="fa fa-file-text fa-1x fa-fw"></i> Report    
+        			</div>  
+        		</a>
+        	</div>	
+            <div class="container">
+        	<div class="col-md-10 " >
+        		<div class="view"> 
+        			<div ng-view></div>
+        		</div>	
+        	</div>
+        </div>
+    </body>
+    </html>
