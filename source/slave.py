@@ -18,10 +18,6 @@ status = 0
 
 global instance
 
-class HelloWorld(restful.Resource):
-    def get(self):
-        return {'msg' : 'Welcome to the server'}
-
 class Inform(restful.Resource):
     def send_port(self):
         requests.post("http://" + sys.argv[1] + ":" + sys.argv[2] + "/connect", data=json.dumps({'port' : sys.argv[3]}))
@@ -36,7 +32,7 @@ class Job(restful.Resource):
             time.sleep(5) 
             status = 2
             url = job["url"] or "http://localhost:8080"
-            num_workers = int(job["num_workers"])
+            num_workers = int(job["users"]) or 100
             num_tasks = int(job["num_tasks"]) or num_workers * 100
             global instance
             instance = requests_store.Task(url, num_workers ,num_tasks)
@@ -44,6 +40,7 @@ class Job(restful.Resource):
             final_report = {}
             final_report["status"] = instance.json_output_status()
             final_report["time"] = instance.json_output_timeseries()
+            final_report["job_status"] = instance.status
             final_report["port"] = sys.argv[3]
             requests.post("http://" + sys.argv[1] + ":" + sys.argv[2] + "/jobresult", data = json.dumps(final_report))      
             status = 0
@@ -56,16 +53,16 @@ class Stats(restful.Resource):
         report = {}
         status_dic = {}
         try:
-            report["status"] = instance.json_output_status()
+            report["status"] = json.loads(instance.json_output_status())
             report["job_status"] = instance.status
         except:
-            report["status"] = json.dumps({"msg" : "No job running" })
+            report["status"] = {"msg" : "No job running" }
             report["job_status"] = False
         try: 
-            report["time"] = instance.json_output_timeseries() 
+            report["time"] = json.loads(instance.json_output_timeseries())
         except:
-            report["time"] = json.dumps({"msg" : "No time available" })
-        return report
+            report["time"] = {"msg" : "No time available" }
+        return json.dumps(report)
 
 class Health(restful.Resource):
     """ Returns it's health condition""" 
@@ -74,8 +71,11 @@ class Health(restful.Resource):
 
 class Stop(restful.Resource):
     def get(self):
-        instance.stop()
-        return {'msg' : 'stopped'}
+        try:
+            instance.stop()
+            return {'msg' : 'stopped'}
+        except:
+            return {'msg' : 'No job started'}
 
 @app.route('/shutdown', methods=['GET'])
 def shutdown():
@@ -90,7 +90,6 @@ def shutdown_server():
 
 Inform().send_port()
 
-api.add_resource(HelloWorld, '/')
 api.add_resource(Inform, '/Inform')
 api.add_resource(Job, '/Job')
 api.add_resource(Health, '/Health')
