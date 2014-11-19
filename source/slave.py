@@ -6,7 +6,6 @@ import json
 import requests
 import requests_store
 import time
-import ast
 
 """Implementation of server as a part of master slave model"""
 """Author : Kavya """
@@ -17,6 +16,7 @@ status = 0
 #0 stands for free status,1 for in Queue status and 2 for busy status
 
 global instance
+global jobKey
 
 class Inform(restful.Resource):
     def send_port(self):
@@ -25,6 +25,8 @@ class Inform(restful.Resource):
 class Job(restful.Resource):
     """ Takes the job , gets the task done and sends back the results"""
     def post(self):
+        global instance
+        global jobKey
         job = request.get_json(force = True)
         if job :            
             status = 1
@@ -35,7 +37,6 @@ class Job(restful.Resource):
             num_workers = int(job["users"]) or 100
             num_tasks = int(job["num_tasks"]) or num_workers * 100
             jobKey = job['jobKey']
-            global instance
             instance = requests_store.Task(url, num_workers ,num_tasks, jobKey)
             result = instance.start()
             final_report = {}
@@ -52,18 +53,18 @@ class Job(restful.Resource):
 
 class Stats(restful.Resource):
     def get(self):
+        global jobKey
         report = {}
         status_dic = {}
         try:
-            report["status"] = json.loads(instance.json_output_status())
             report["job_status"] = instance.status
+            report['jobKey'] = jobKey
+            report["status"] = json.loads(instance.json_output_status())
+            report["time_series"] = json.loads(instance.json_output_timeseries())
         except:
             report["status"] = {"msg" : "No job running" }
             report["job_status"] = False
-        try: 
-            report["time"] = json.loads(instance.json_output_timeseries())
-        except:
-            report["time"] = {"msg" : "No time available" }
+
         return json.dumps(report)
 
 class Health(restful.Resource):

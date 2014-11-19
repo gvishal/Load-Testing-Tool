@@ -5,6 +5,6 @@ def hello_world(environ, start_response):
     yield '<b>Hello world!</b>\n'
 
 server = pywsgi.WSGIServer(
-    ('', 8090), hello_world)
+    ('', 8080), hello_world)
 
 server.serve_forever()

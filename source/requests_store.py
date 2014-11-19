@@ -46,7 +46,7 @@ class Task:
         self.url = url
         self.num_worker = num_worker
         self.num_tasks = num_tasks
-
+        self.jobKey = jobKey
         self.spawn_workers()
 
         self.add_to_queue()
