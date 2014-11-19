@@ -116,7 +116,7 @@ if __name__ == '__main__':
         args = Parse().parse()
         print args.masterUrl, args.masterPort, args.slavePort
         requests.post("http://" + args.masterUrl + ":" + args.masterPort + "/connect", data=json.dumps({'port' : args.slavePort }))
-        app.run( host='0.0.0.0', debug=True, port=int(args.slavePort), threaded=True)
+        app.run( host='0.0.0.0', port=int(args.slavePort), threaded=True)
     except:
         print "Master not yet started"
         

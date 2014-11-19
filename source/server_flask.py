@@ -332,9 +332,9 @@ class Past(restful.Resource):
 def landing():
     return render_template('index.html')
 
-@app.route('/graph')
-def graph():
-    return render_template('graph.html')
+# @app.route('/graph')
+# def graph():
+#     return render_template('graph.html')
 
 @socketio.on('realTimeData')
 def test_message(message):
@@ -350,7 +350,7 @@ def test_message(message):
         # slave report 
         emit("slave", dic)
         emit("history", all_jobs)
-        gevent.sleep(1)
+        gevent.sleep(1.5)
 
 api.add_resource(Connect, '/connect')
 api.add_resource(Job, '/job')

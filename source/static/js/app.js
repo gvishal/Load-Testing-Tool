@@ -26,7 +26,6 @@ robo.config(function($routeProvider) {
     }).otherwise({
         redirectTo: '/'
     });
-
 });
 
 robo.service('roboService', function($http, $rootScope){
@@ -47,10 +46,10 @@ robo.controller('roboController', function($scope, roboService, socket) {
     $scope.newJob =  {method:"GET", url: "http://localhost:8000/", users:20}
     socket.emit('realTimeData', '')
     $scope.salesData=[
-        {hour: 1,sales:1}
+        {hour: 0,sales:1}
     ];
     $scope.rpsData=[
-        {hour: 1,sales:1}
+        {hour: 0,sales:1}
     ];
     $scope.allreadyAdded = {}
     var milliseconds = (new Date).getTime();
@@ -73,11 +72,11 @@ robo.controller('roboController', function($scope, roboService, socket) {
         });
     })
     socket.on('slave', function(data){
-        //console.dir(data)
+        console.dir(data)
         $scope.slaves = data
     })
     socket.on('history', function(data){
-        //  console.dir(data)
+        console.dir(data)
         $scope.histories = data
     })
     $scope.submitNewJob = function(){
