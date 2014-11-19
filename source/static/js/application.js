@@ -1,8 +1,9 @@
 $(function() {
 
 	var dashboard = new PowerDashboard({
+		wheelGraphEndpointAlias: '24-hours',
 		apiConfig: {
-			host: 'file:///home/vg/Downloads/puewue-frontend_2/puewue-frontend/demo/api',
+			host: 'static/api',
 			// uriPrefix: 'api'
 		},
 		metrics: [
