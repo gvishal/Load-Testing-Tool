@@ -11,6 +11,7 @@ import json
 import time
 import ast
 import uuid
+import gevent
 app = Flask(__name__)
 api = restful.Api(app)
 app.config['STATIC_FOLDER'] = 'static'
@@ -68,6 +69,7 @@ class Slave(restful.Resource):
 class Status(restful.Resource):
     def get(self):
         report = {}
+        t = {}
         total_time = 0
         total_requests = 0
         global dic
@@ -77,18 +79,20 @@ class Status(restful.Resource):
             job_status = json.loads(json.loads(r.text))
             status = None
             try:
-                print 'We are here in try'
+                #print 'We are here in try'
                 status = job_status['status']
+                time = job_status['time_series']
             except:
                 return json.loads(json.loads(r.text))
             
             if len(status) < 2:
-                return {"status" : False, "msg" : "no stats found"}
+                continue
+                    
             dic[i]['report'] = status
-            print job_status
+            #print job_status
 
-            if job_status.get('msg') != None:
-                return json.loads(job_status)
+            #if job_status.get('msg') != None:
+             #   return json.loads(job_status)
 
             total_requests += int(dic[i]['report']['num_requests'])
             total_time += int(dic[i]['report']['avg_response_time']) * int(dic[i]['report']['num_requests'])
@@ -101,13 +105,27 @@ class Status(restful.Resource):
             report['max_response_time'] = max(report.setdefault('max_response_time', 0), int(dic[i]['report']['max_response_time']))
             report['content_length'] = int(dic[i]['report']['content_length'])
             report['num_reqs_per_sec'] = report.setdefault('num_reqs_per_sec', 0) + int(dic[i]['report']['num_reqs_per_sec'])
-        print 'We are here'
+        #print 'We are here'
         try:
             report['avg_response_time'] = total_time / total_requests
         except:
             report['avg_response_time'] = 0
+        k = 0
+        while k < len(time):
+            t[time[k]["timestamp"]] = {}
+            for j in time[k]:
+                if j != "timestamp":
+                    try:
+                        t[time[k]["timestamp"]][j] += time[k][j]
+                         
+                    except:
+                        t[time[k]["timestamp"]][j] = time[k][j]
+                k += 1
 
-        return report
+        final_report={}
+        final_report['status']=report
+        final_report['time_series']=t
+        return final_report
         
         #def post(self):
         #   i = request.remote_addr[:]
@@ -145,6 +163,14 @@ class JobResult(restful.Resource):
 """ The below class's method 'post' is activated when the "Start Job" button is clicked upon. 
     The job received as JSON string from post.html is sent to another server acting as a slave to this server.
 """
+def worker(i,jsonData):
+    ip = 'http://' + i + '/Job'
+    z = time.time() - start
+    dic[i]['job-given'] = z
+    dic[i]['status'] = 1
+    y = json.dumps(jsonData)
+    r = requests.post(ip, data=y)
+    return
 
 class Job(restful.Resource):
     """Implementing api '/job'"""
@@ -165,17 +191,19 @@ class Job(restful.Resource):
             jsonData['num_tasks'] = int(jsonData['num_tasks'])/len(dic)
         except:
             jsonData['num_tasks'] = jsonData['users']*10
-        print 'dic', dic
+        #print 'dic', dic
         jsonData['jobKey'] = str(uuid.uuid1())
+        x = []
+        done = 1        
         for i in dic:
             if dic[i]['status'] == 0 and dic[i]['killed'] == -1:
-                ip = 'http://' + i + '/Job'
-                z = time.time() - start
-                dic[i]['job-given'] = z
-                dic[i]['status'] = 1
-
-                y = json.dumps(jsonData)
-                r = requests.post(ip, data=y)
+                x.append(gevent.spawn(worker,i,jsonData))
+                done = 0
+            else:
+                done = 1
+        if done == 1:
+            return {"status": False, 'msg' : 'All slaves are busy'}
+        gevent.joinall(x)
         return {"status": True, 'msg' : 'Job sent'}
 
 class HealthCheck(restful.Resource):
