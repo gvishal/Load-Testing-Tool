@@ -5,33 +5,86 @@
    <h2>Report</h2> 
   </div>
 </div><br/>
-<div class="table"> 
-   <table ng-table="reportParams" class="table">
-    <thead>
-        <tr>
-            <th>Type</th>
-            <th>Name</th>
-            <th>Request</th>
-            <th>Fails</th>
-            <th>Average</th>
-            <th>Min</th>
-            <th>Max</th>
-            <th>Size</th>
-            <th>Req-Size</th>
-            
-        </tr>
-    </thead>
-    <tbody>
-        <tr class="data" ng-repeat="slave in slaves">
-            <td>{{slave.sl}}</td>
-            <td>{{slave.status}}</td>
-            <td>{{slave.port}}</td>
-            <td>{{slave.job-given}}</td>
-            <td>{{slave.created}}</td>
-            <td>{{slave.name}}</td>
-            
-        </tr>      
-    </tbody>
-</table>
-</div>
 
+<div class="form-group">
+  <div class="row">
+    <div class="col-md-4" >
+      <label class="control-label" for="method">Method</label>
+    </div>
+    <div class="col-md-6">
+      <label class="control-label" for="method" ng-bind="summary.method">Method</label>
+    </div>
+  </div><br/>
+  <div class="row">
+    <div class="col-md-4" >
+      <label class="control-label" for="method">URL</label>
+    </div>
+    <div class="col-md-6">
+      <label class="control-label" for="method" ng-bind="summary.name">Method</label>
+    </div>
+  </div><br/>
+  <div class="row">
+    <div class="col-md-4" >
+      <label class="control-label" for="method">Requests</label>
+    </div>
+    <div class="col-md-6">
+      <label class="control-label" for="method" ng-bind="summary.num_requests">Method</label>
+    </div>
+  </div><br/>
+  <div class="row">
+    <div class="col-md-4" >
+      <label class="control-label" for="method">Failures</label>
+    </div>
+    <div class="col-md-6">
+      <label class="control-label" for="method" ng-bind="summary.num_failures">Method</label>
+    </div>
+  </div><br/>
+  <div class="row">
+    <div class="col-md-4" >
+      <label class="control-label" for="method">Median Response Time</label>
+    </div>
+    <div class="col-md-6">
+      <label class="control-label" for="method" ng-bind="summary.median_response_time">Method</label>
+    </div>
+  </div><br/>
+  <div class="row">
+    <div class="col-md-4" >
+      <label class="control-label" for="method">Average Response Time</label>
+    </div>
+    <div class="col-md-6">
+      <label class="control-label" for="method" ng-bind="summary.avg_response_time">Method</label>
+    </div>
+  </div><br/>
+  <div class="row">
+    <div class="col-md-4" >
+      <label class="control-label" for="method">Min Response Time</label>
+    </div>
+    <div class="col-md-6">
+      <label class="control-label" for="method" ng-bind="summary.min_response_time">Method</label>
+    </div>
+  </div><br/>
+  <div class="row">
+    <div class="col-md-4" >
+      <label class="control-label" for="method">Max Response Time</label>
+    </div>
+    <div class="col-md-6">
+      <label class="control-label" for="method" ng-bind="summary.max_response_time">Method</label>
+    </div>
+  </div><br/>
+  <div class="row">
+    <div class="col-md-4" >
+      <label class="control-label" for="method">Requests Per Second</label>
+    </div>
+    <div class="col-md-6">
+      <label class="control-label" for="method" ng-bind="summary.num_reqs_per_sec">Method</label>
+    </div>
+  </div><br/>
+  <div class="row">
+    <div class="col-md-4" >
+      <label class="control-label" for="method">Content Size</label>
+    </div>
+    <div class="col-md-6">
+      <label class="control-label" for="method" ng-bind="summary.content_length">Method</label>
+    </div>
+  </div><br/>
+</div>

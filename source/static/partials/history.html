@@ -1,0 +1,47 @@
+ <div class="row">
+  <div class="col-md-5">
+  </div>  
+  <div class="col-md-4">
+     <h2>Job History</h2> 
+ </div>
+</div>
+<br>
+<div class="table"> 
+ <table ng-table="tableParams" class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Job Key</th>
+            <th>Port</th>
+            <th>Status</th>
+            <th>Created</th>
+            <th>Updated</th>
+            <th>Last Job</th>
+            <th>Respoce Time(avg)</th>
+            <th>RPS</th>
+            <th>Failed</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="data" ng-repeat="history in histories">
+            <td>{{$index + 1 }}</td>
+            <td>{{history}}</td>
+            <td>{{slave.port}}</td>
+            <td>{{slave.status}}</td>
+            <td>{{slave.created}}</td>
+            <td>{{slave.updated}}</td>
+            <td>{{slave.lastjob.jobKey}}</td>
+            <td>{{slave.lastjob.summary.avg_response_time}}</td>
+            <td>{{slave.lastjob.summary.num_reqs_per_sec}}</td>
+            <td>{{slave.lastjob.summary.num_failures}}</td>
+        </tr>      
+    </tbody>
+</table>
+</div>
+<hr>
+
+
+
+
+

@@ -10,24 +10,31 @@
  <table ng-table="tableParams" class="table">
     <thead>
         <tr>
-            <th>Sl</th>
+            <th>#</th>
             <th>IP</th>
             <th>Port</th>
             <th>Status</th>
             <th>Created</th>
             <th>Updated</th>
+            <th>Last Job</th>
+            <th>Respoce Time(avg)</th>
+            <th>RPS</th>
+            <th>Failed</th>
             
         </tr>
     </thead>
     <tbody>
         <tr class="data" ng-repeat="slave in slaves">
-            <td>{{slave.sl}}</td>
-            <td>{{slave.status}}</td>
+            <td>{{$index + 1 }}</td>
+            <td>{{slave.ip}}</td>
             <td>{{slave.port}}</td>
-            <td>{{slave.job-given}}</td>
-            <td>{{slave.created}}</td>
-            <td>{{slave.name}}</td>
-            
+            <td>{{slave.status}}</td>
+            <td>{{slave.created*1000 | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+            <td>{{slave.updated*1000 | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+            <td>{{slave.lastjob.jobKey}}</td>
+            <td>{{slave.lastjob.summary.avg_response_time}}</td>
+            <td>{{slave.lastjob.summary.num_reqs_per_sec}}</td>
+            <td>{{slave.lastjob.summary.num_failures}}</td>
         </tr>      
     </tbody>
 </table>

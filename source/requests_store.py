@@ -11,6 +11,7 @@ monkey.patch_all(thread=False)
 
 import requests
 from requests import Response, Request
+import json
 
 import requests_stats
 from requests_stats import global_stats
@@ -64,12 +65,20 @@ class Task:
         return locals()
     status = property(**status())
 
-    def start(self):
+    def start(self, masterUrl, masterPort, slavePort, jobKey):
         """Call object.start to start spawning"""
         start_time = time.time()
         self._status = STATE_RUNNING
         self.task_queue.join()  # block until all tasks are done
         self._status = STATE_FINISHED
+        final_report = {}
+        final_report["summary"] = json.loads(self.json_output_status(jobKey))
+        final_report["time_series"] = json.loads(self.json_output_timeseries(jobKey))
+        final_report["time_stamp"] = json.loads(self.json_output_timestamp(jobKey))
+        final_report["job_status"] = self.status
+        final_report["port"] = slavePort
+        final_report['jobKey'] = jobKey
+        requests.post("http://" + masterUrl + ":" + masterPort + "/jobresult", data = json.dumps(final_report))  
 
     def stop(self):
         """ Set self.work False so that condition in worker becomes false."""
@@ -102,11 +111,14 @@ class Task:
         # print requests_stats.global_stats.get('/', 'GET').json_output_status()
         # print 'Median Response Time: %s' % requests_stats.global_stats.get('/', 'GET').median_response_time
 
-    def json_output_timeseries(self):
-        return requests_stats.global_stats.get('/', 'GET').json_output_timeseries()
+    def json_output_timeseries(self, jobKey):
+        return requests_stats.global_stats.get('/', 'GET', jobKey).json_output_timeseries()
 
-    def json_output_status(self):
-        return requests_stats.global_stats.get('/', 'GET').json_output_status()
+    def json_output_timestamp(self, jobKey):
+        return json.dumps(requests_stats.global_stats.get('/', 'GET', jobKey).data_per_sec)
+
+    def json_output_status(self, jobKey):
+        return requests_stats.global_stats.get('/', 'GET', jobKey).json_output_status()
 
     def reset_stats(self):
         """ Resets all stats """
@@ -137,7 +149,7 @@ class Task:
 
     def request(self, method, url, name = None, **kwargs):
         # store meta data that is used when reporting the request to locust's statistics
-        request_meta = {}
+        request_meta = {"jobKey" : self.jobKey}
         
         # # set up pre_request hook for attaching meta data to the request object
         # request_meta["start_time"] = time.time()

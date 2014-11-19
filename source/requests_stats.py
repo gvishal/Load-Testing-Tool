@@ -15,16 +15,16 @@ class RequestStats(object):
         self.num_failures = 0
         self.max_requests = None
         self.last_request_timestamp = None
-        self.start_time = None
+        self.start_time = time.time()
     
-    def get(self, name, method):
+    def get(self, name, method, jobKey):
         """
         Retrieve a StatsEntry instance by name and method
         """
-        entry = self.entries.get((name, method))
+        entry = self.entries.get((name, method, jobKey))
         if not entry:
             entry = StatsEntry(self, name, method)
-            self.entries[(name, method)] = entry
+            self.entries[(name, method, jobKey)] = entry
         return entry
     
     def aggregated_stats(self, name="Total", full_request_history=False):
@@ -56,8 +56,8 @@ class RequestStats(object):
         self.entries = {}
         self.errors = {}
         self.max_requests = None
-        self.last_request_timestamp = None
-        self.start_time = None
+        self.last_request_timestamp = int(time.time())
+        self.start_time = time.time()
 
 class StatsEntry(object):
     """
@@ -109,10 +109,10 @@ class StatsEntry(object):
     total_content_length = None
     """ The sum of the content length of all the requests for this entry """
     
-    start_time = None
+    start_time = time.time()
     """ Time of the first request for this entry """
     
-    last_request_timestamp = None
+    last_request_timestamp = int(time.time())
     """ Time of the last request for this entry """
     
     def __init__(self, stats, name, method):
@@ -127,7 +127,7 @@ class StatsEntry(object):
         self.num_failures = 0
         self.total_response_time = 0
         self.response_times = {}
-        self.min_response_time = 0
+        self.min_response_time = 1000000
         self.max_response_time = 0
         self.last_request_timestamp = int(time.time())
         self.num_reqs_per_sec = {}
@@ -171,7 +171,7 @@ class StatsEntry(object):
         self.json_data  = []
         for key,value in dict(sorted(self.data_per_sec.iteritems())).items():
             value['timestamp'] = key
-            value['response_time'] = round(self.avg_response_time, 3)
+            value['avg_response_time'] = round(self.avg_response_time, 3)
             # value['min_requests'] = value['requests']
             # value['max_requests'] = value['requests']
             # value['min_failures'] = value['failures']
@@ -334,8 +334,8 @@ def median_from_dict(total, count):
 
 global_stats = RequestStats()
 
-def on_request_success(request_type, name, response_time, response_length):
-    global_stats.get(name, request_type).log(response_time, response_length)
+def on_request_success(request_type, name, response_time, response_length, jobKey):
+    global_stats.get(name, request_type, jobKey).log(response_time, response_length)
 
-def on_request_failure(request_type, name, response_time, exception='Error'):
-    global_stats.get(name, request_type).log_error(exception)
+def on_request_failure(request_type, name, response_time, jobKey, exception='Error'):
+    global_stats.get(name, request_type, jobKey).log_error(exception)

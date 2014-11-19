@@ -1,4 +1,10 @@
-var robo = angular.module('robo', ['ngRoute']);
+var robo = angular.module('robo', ['ngRoute', 'btford.socket-io']);
+
+robo.factory('socket', function(socketFactory){
+    return socketFactory({
+        ioSocket: io.connect('http://localhost:8080')
+    });
+})
 
 robo.config(function($routeProvider) {
     $routeProvider
@@ -8,6 +14,10 @@ robo.config(function($routeProvider) {
     })
     .when('/report', {
         templateUrl: 'static/partials/report.html',
+        controller: 'roboController'
+    })
+    .when('/history', {
+        templateUrl: 'static/partials/history.html',
         controller: 'roboController'
     })
     .when('/slave', {
@@ -33,9 +43,21 @@ robo.service('roboService', function($http, $rootScope){
     }
 })
 
-robo.controller('roboController', function($scope, roboService) { 
-    $scope.newJob =  {}
-
+robo.controller('roboController', function($scope, roboService, socket) { 
+    $scope.newJob =  {method:"GET", url: "http://localhost:8000/", users:20}
+    socket.emit('realTimeData', '')
+    socket.on('status', function(data){
+        console.dir(data)
+        $scope.summary = data.summary
+    })
+    socket.on('slave', function(data){
+        console.dir(data)
+        $scope.slaves = data
+    })
+    socket.on('history', function(data){
+        console.dir(data)
+        $scope.histories = data
+    })
     $scope.submitNewJob = function(){
         roboService.startJob($scope.newJob).then(function(data){
             console.dir(data)
