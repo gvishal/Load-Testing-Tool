@@ -28,7 +28,9 @@
             <td>{{$index + 1 }}</td>
             <td width="100">{{slave.ip}}</td>
             <td>{{slave.port}}</td>
-            <td ng-if="slave.status == 0">Running</td>
+            <td ng-if="slave.status == 0">Idle</td>
+            <td ng-if="slave.status == 1">Queued</td>
+            <td ng-if="slave.status == 2">Busy</td>
             <td>{{slave.created*1000 | date:'yyyy-MM-dd HH:mm:ss'}}</td>
             <td>{{slave.updated*1000 | date:'yyyy-MM-dd HH:mm:ss'}}</td>
             <td width="160">{{slave.lastjob.jobKey}}</td>
