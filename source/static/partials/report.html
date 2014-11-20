@@ -10,16 +10,24 @@
   <div class="col-xs-6">
     <div >
       <h1>Response Time (ms)</h1>
-      <div linear-chart chart-data="salesData"></div>
+      <div linear-chart chart-data="salesData" chart-color="blue"></div>
     </div>
     <div >
       <h1>Requests Per Second</h1>
-      <div linear-chart chart-data="rpsData"></div>
+      <div linear-chart chart-data="rpsData" chart-color="red"></div>
     </div>
   </div>
   <div class="col-xs-6">
 
     <div class="form-group">
+      <div class="row">
+        <div class="col-md-6" >
+          <label class="control-label" for="method">Slaves</label>
+        </div>
+        <div class="col-md-6">
+          <label class="control-label" for="method">{{size(slaves)}}</label>
+        </div>
+      </div><br/>
       <div class="row">
         <div class="col-md-6" >
           <label class="control-label" for="method">Method</label>

@@ -12,6 +12,10 @@ robo.config(function($routeProvider) {
         templateUrl: 'static/partials/newtask.html',
         controller: 'roboController'
     })
+    .when('/', {
+        templateUrl: 'static/partials/newtask.html',
+        controller: 'roboController'
+    })
     .when('/report', {
         templateUrl: 'static/partials/report.html',
         controller: 'roboController'
@@ -46,10 +50,10 @@ robo.controller('roboController', function($scope, roboService, socket) {
     $scope.newJob =  {method:"GET", url: "http://localhost:8000/", users:100}
     socket.emit('realTimeData', '')
     $scope.salesData=[
-        {hour: 0,sales:1}
+        {hour: 1,sales:1}
     ];
     $scope.rpsData=[
-        {hour: 0,sales:1}
+        {hour: 1,sales:1}
     ];
     $scope.allreadyAdded = {}
     var milliseconds = (new Date).getTime();
@@ -64,8 +68,6 @@ robo.controller('roboController', function($scope, roboService, socket) {
             // key = Math.floor(key)
             console.dir(value)
             // console.dir(key)
-            $scope.rpsData = $scope.rpsData.slice(-19)
-            $scope.salesData = $scope.rpsData.slice(-19)
             $scope.salesData.push({hour: (key - milliseconds)/1000, sales:value.avg_response_time});
             $scope.rpsData.push({hour: (key - milliseconds )/1000, sales:value.requests});
           }
@@ -84,7 +86,15 @@ robo.controller('roboController', function($scope, roboService, socket) {
             console.dir(data)
         })
     }
+    $scope.size = function(obj) {
+        var size = 0, key;
+        for (key in obj) {
+            if (obj.hasOwnProperty(key)) size++;
+        }
+        return size;
+    };
 });
+
 
 robo.directive('linearChart', function($parse, $window){
    return{
@@ -92,6 +102,8 @@ robo.directive('linearChart', function($parse, $window){
       template:"<svg width='450' height='200'></svg>",
        link: function(scope, elem, attrs){
            var exp = $parse(attrs.chartData);
+           var color = attrs.chartColor
+
 
            var salesDataToPlot=exp(scope);
            var padding = 10;
@@ -139,7 +151,7 @@ robo.directive('linearChart', function($parse, $window){
                    .interpolate("basis");
            }
          
-         function drawLineChart() {
+         function drawLineChart(color) {
 
                setChartParameters();
 
@@ -156,7 +168,7 @@ robo.directive('linearChart', function($parse, $window){
                svg.append("svg:path")
                    .attr({
                        d: lineFun(salesDataToPlot),
-                       "stroke": "blue",
+                       "stroke": color,
                        "stroke-width": 2,
                        "fill": "none",
                        "class": pathClass
@@ -177,7 +189,7 @@ robo.directive('linearChart', function($parse, $window){
                    });
            }
 
-           drawLineChart();
+           drawLineChart(color);
        }
    };
 });
