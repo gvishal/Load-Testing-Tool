@@ -106,7 +106,7 @@ robo.directive('linearChart', function($parse, $window){
 
 
            var salesDataToPlot=exp(scope);
-           var padding = 10;
+           var padding = 20;
            var pathClass="path";
            var xScale, yScale, xAxisGen, yAxisGen, lineFun;
 

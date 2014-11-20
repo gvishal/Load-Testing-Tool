@@ -103,11 +103,12 @@ def getCurrentStatus():
         url = 'http://' + i + '/Stats'
         try:
             r = requests.get(url)
-        except:
+        except Exception as ext:
+            print ext
             continue
 
         job_data = json.loads(r.text)
-
+        print 'We got the data', job_data
         if not job_data['job_status']:
             continue
 

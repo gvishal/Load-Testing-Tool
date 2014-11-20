@@ -154,15 +154,16 @@ class Task:
         # # set up pre_request hook for attaching meta data to the request object
         # request_meta["start_time"] = time.time()
         # gevent.sleep(1)
+        print method, url
         
         response = self._send_request_safe_mode(method, url, **kwargs)
-        
+
         # record the consumed time in milliseconds
         request_meta["response_time"] = round(timedelta.total_seconds(response.elapsed)*1000,3) or 0
         
         request_meta["request_type"] = response.request.method
-        request_meta["name"] = name or (response.history and response.history[0] or response).request.path_url
-
+        # request_meta["name"] = name or (response.history and response.history[0] or response).request.path_url
+        request_meta["name"] = '/'
         try:
             response.raise_for_status()
         except RequestException as e:
