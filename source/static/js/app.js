@@ -43,7 +43,7 @@ robo.service('roboService', function($http, $rootScope){
 })
 
 robo.controller('roboController', function($scope, roboService, socket) { 
-    $scope.newJob =  {method:"GET", url: "http://localhost:8000/", users:20}
+    $scope.newJob =  {method:"GET", url: "http://localhost:8000/", users:100}
     socket.emit('realTimeData', '')
     $scope.salesData=[
         {hour: 0,sales:1}
@@ -56,16 +56,16 @@ robo.controller('roboController', function($scope, roboService, socket) {
     socket.on('status', function(data){
        
         $scope.summary = data.summary
-        var i = 0
+
         angular.forEach(data.time_stamp, function(value, key) {
-        var old_key = key
+
           if(!$scope.allreadyAdded[key]){
             $scope.allreadyAdded[key] = true
             // key = Math.floor(key)
             console.dir(value)
             // console.dir(key)
-            // $scope.rpsData = $scope.rpsData.slice(-19)
-            // $scope.salesData = $scope.rpsData.slice(-19)
+            $scope.rpsData = $scope.rpsData.slice(-19)
+            $scope.salesData = $scope.rpsData.slice(-19)
             $scope.salesData.push({hour: (key - milliseconds)/1000, sales:value.avg_response_time});
             $scope.rpsData.push({hour: (key - milliseconds )/1000, sales:value.requests});
           }

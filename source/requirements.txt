@@ -10,7 +10,5 @@ greenlet==0.4.4
 Jinja2==2.7.3
 MarkupSafe==0.15
 SQLAlchemy==0.9.8
-gevent==1.0.1
-greenlet==0.4.4
-httplib2==0.7.2
 itsdangerous==0.24
+requests==2.4.3

@@ -101,7 +101,10 @@ def getCurrentStatus():
     global dic
     for i in dic:
         url = 'http://' + i + '/Stats'
-        r = requests.get(url)
+        try:
+            r = requests.get(url)
+        except:
+            continue
 
         job_data = json.loads(r.text)
 

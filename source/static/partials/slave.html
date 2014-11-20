@@ -26,13 +26,13 @@
     <tbody>
         <tr class="data" ng-repeat="slave in slaves">
             <td>{{$index + 1 }}</td>
-            <td>{{slave.ip}}</td>
+            <td width="100">{{slave.ip}}</td>
             <td>{{slave.port}}</td>
             <td ng-if="slave.status == 0">Running</td>
             <td>{{slave.created*1000 | date:'yyyy-MM-dd HH:mm:ss'}}</td>
             <td>{{slave.updated*1000 | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-            <td>{{slave.lastjob.jobKey}}</td>
-            <td>{{slave.lastjob.summary.avg_response_time}}</td>
+            <td width="160">{{slave.lastjob.jobKey}}</td>
+            <td width="160">{{slave.lastjob.summary.avg_response_time}}</td>
             <td>{{slave.lastjob.summary.num_reqs_per_sec}}</td>
             <td>{{slave.lastjob.summary.num_failures}}</td>
         </tr>      
