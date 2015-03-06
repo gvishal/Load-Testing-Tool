@@ -2,6 +2,11 @@
 __pycache__/
 *.py[cod]
 
+diagrams/
+documents/
+feedback/
+meeting_minutes/
+
 # C extensions
 *.so
 
