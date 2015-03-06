@@ -19,4 +19,4 @@
 ### Run Test Server(default port:8000):
     python test_server
 
-There is a browser based UI.Just visit 127.0.0.1:8080 and follow instructions.
+There is a browser based UI. Just visit 127.0.0.1:8080 and follow instructions.
