@@ -1,6 +1,3 @@
-"""Implementation of Master part of Master-Slave mode
-   Author : G Pooja Shamili"""
-
 from flask import Flask, render_template
 from flask.ext import restful
 from flask import jsonify

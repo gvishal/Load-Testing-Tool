@@ -8,9 +8,6 @@ import requests_store
 import time
 import argparse
 
-"""Implementation of server as a part of master slave model"""
-"""Author : Kavya """
-
 app = Flask(__name__)
 api = restful.Api(app)
 status = 0 
